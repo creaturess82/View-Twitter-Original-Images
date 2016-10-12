@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <script type="text/javascript" charset="utf-8">
+  safari.application.addEventListener("contextmenu", handleContextMenu, false);
+  safari.application.addEventListener("command", handleCommand, false);
+  //safari.application.addEventListener("validate", handleValidate, false);
+  
+  var lang=window.navigator.language;
+  if (lang.indexOf("ko") != -1){
+      var titleText = "Twitter 이미지 원본 보기";
+  }
+  
+  else if (lang.indexOf("ja") != -1){
+      var titleText = "Twitterの画像を原寸表示";
+  }
+  
+  else {
+      var titleText = "View original image at Twitter";
+  }
+
+  function displayOriginalImage(imageUrl) {
+      
+    var renamedUrl = "";
+    
+    if (imageUrl.indexOf(":thumb") != -1) {
+        renamedUrl = imageUrl.replace(":thumb", ":orig");
+    }
+    else if (imageUrl.indexOf(":small") != -1) {
+        renamedUrl = imageUrl.replace(":small", ":orig");
+    }
+    else if (imageUrl.indexOf(":large") != -1) {
+        renamedUrl = imageUrl.replace(":large", ":orig");
+    }
+    else if (imageUrl.indexOf(":orig") != -1) {
+        renamedUrl = imageUrl;
+    }
+    else
+    {
+        renamedUrl = imageUrl + ":orig";
+    }
+      
+    var tab = safari.application.activeBrowserWindow.openTab();
+    tab.url = renamedUrl;
+  }
+
+  function handleCommand(event) {
+    if (event.command === "displayOriginalImage") {
+      displayOriginalImage(event.userInfo.src);
+    }
+  }
+
+  function handleContextMenu(event) {
+    if (event.userInfo != null) {
+      event.contextMenu.appendContextMenuItem("displayoriginalimage", titleText, "displayOriginalImage");
+    }
+  }
+
+  </script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+</body>
+</html>
